@@ -10,7 +10,7 @@ class BookTagSerializer(serializers.ModelSerializer):
 
 
 class BookSerializer(serializers.ModelSerializer):
-    booktag_set = BookTagSerializer(many=True)
+    booktag_set = BookTagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Book
