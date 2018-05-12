@@ -113,4 +113,4 @@ venv.bak/
 .idea
 out
 gen
-/heroku_run_local.sh
+/*.sh
