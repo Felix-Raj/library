@@ -135,3 +135,8 @@ settings(locals())
 import dj_database_url
 from dj_database_url import config
 DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True, default=config('DATABASE_URL'))
+
+try:
+    import local_settings
+except ImportError:
+    pass
