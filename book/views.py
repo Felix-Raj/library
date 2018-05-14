@@ -1,4 +1,5 @@
 import logging
+from functools import reduce
 
 from django.db.models import QuerySet, Q
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, get_object_or_404
@@ -16,12 +17,17 @@ logger.debug("This is a sample debug message")
 def filter_book_list(queryset: QuerySet, **kwargs) -> QuerySet:
     if not kwargs:
         return queryset
-    valid_queries = ['author', 'title']
-    q = Q()
+    valid_queries = ['author', 'title', 'booktag__tag']
+    q = list()
     for k, v in kwargs.items():
         if k in valid_queries:
-            q = q & Q(**{k + '__icontains': v[0]})
-    return queryset.filter(q)
+            q.append(Q(**{k + '__icontains': v[0]}))
+    logger.debug(q)
+    if q:
+        queryset = queryset.filter(
+            reduce(lambda x, y: x & y, q)
+        )
+    return queryset
 
 
 class BookListView(ListAPIView):

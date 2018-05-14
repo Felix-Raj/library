@@ -24,19 +24,23 @@ A _small_ library app. Half Baked.
     ```text
     /book/?title=title_name
     ```
-4. Or combine 3 and 4
+4. Search by book tag
     ```text
-    /book/?title=title_name&&author=author_name
+    /book/?booktag__tag=tag
     ```
-5. See details of a book with pk `pk`
+4. Or use a combination of any of 2, 3, 4
+6. See details of a book with pk `pk`
     ```text
     /book/pk
     ```
-6. Create a new Book
+7. Create a new Book
     ```text
     /book/new
     ```
 7. Add tag to a book with pk `pk`
     ```text
-    /book/pk/tag
+    /book/pk/tag/?tags=tag1,tag2, tag 3
     ```
+
+### Demo ###
+Demo app can be found [here](https://boiling-scrubland-41951.herokuapp.com).
