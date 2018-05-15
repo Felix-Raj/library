@@ -1,6 +1,6 @@
-# A Small Library App #
+# A Small Library App Backend#
 
-A _small_ library app. Half Baked.
+A _small_ library app backend. Half Baked.
 
 ### Installation ###
 * Clone Me
@@ -43,4 +43,4 @@ A _small_ library app. Half Baked.
     ```
 
 ### Demo ###
-Demo app can be found [here](https://boiling-scrubland-41951.herokuapp.com).
+A Sample of API can be found [here](https://boiling-scrubland-41951.herokuapp.com).
