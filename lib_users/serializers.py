@@ -15,6 +15,7 @@ class LentSerializer(serializers.ModelSerializer):
         fields = ('lib_user', 'book', 'lent_on', 'duration')
 
     # todo 5/19/18 felixraj : add necessary validations if needed
+    # todo 5/23/18 felixraj : validate weather book is actually available for lent
     # http://www.django-rest-framework.org/api-guide/serializers/#validation
 
 
