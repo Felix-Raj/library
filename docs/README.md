@@ -69,7 +69,7 @@ A _small_ library app backend. Half Baked.
     /lib_user/lent/?book=pk
     ```
     
-2. List all lents - search for user with name containin `name`
+2. List all lents - search for user with name containing `name`
     ```text
     /lib_user/lent/?lib_user__name=name
     ```
