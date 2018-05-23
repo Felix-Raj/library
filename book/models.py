@@ -17,6 +17,11 @@ class Book(models.Model):
     def has_tag(self, tag):
         return self.booktag_set.all().filter(tag__iexact=tag.lower()).count() > 0
 
+    @property
+    def is_available(self):
+        # todo 5/19/18 felixraj : complete this function
+        return False
+
 
 class BookTag(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)

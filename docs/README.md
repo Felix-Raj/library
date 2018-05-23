@@ -41,6 +41,50 @@ A _small_ library app backend. Half Baked.
     ```text
     /book/pk/tag/?tags=tag1,tag2, tag 3
     ```
+    
+##### Library Users Related #####
+1. List all Library Users
+    ```text
+    /lib_user/
+    ```
+    
+2. Create a new user
+    ```text
+    /lib_user/new
+    ```
+
+##### Lent Related #####
+1. List all lents
+    ```text
+    /lib_user/lent/
+    ```
+    
+2. List all lents - search for user with pk `pk`
+    ```text
+    /lib_user/lent/?lib_user=pk
+    ```
+    
+2. List all lents - search  for book with pk `pk`
+    ```text
+    /lib_user/lent/?book=pk
+    ```
+    
+2. List all lents - search for user with name containin `name`
+    ```text
+    /lib_user/lent/?lib_user__name=name
+    ```
+    
+2. List all lents - search for book with name containing `name`
+    ```text
+    /lib_user/lent/?book_title=name
+    ```
+    
+3. List all lents - can mix any of the above queries
+
+4. Create new Lent
+    ```text
+    /lib_user/lent/new/
+    ```
 
 ### Demo ###
 A Sample of API can be found [here](https://boiling-scrubland-41951.herokuapp.com).
