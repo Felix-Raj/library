@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+git pull origin
 python manage.py makemigrations
 git add -f */migrations/*
 git commit -m "add migrations for heroku"
