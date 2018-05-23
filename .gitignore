@@ -114,3 +114,4 @@ venv.bak/
 out
 gen
 /*.sh
+!push for heroku.sh
