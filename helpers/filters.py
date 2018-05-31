@@ -15,6 +15,8 @@ def filter_qs(queryset, valid_queries, **queries):
     :param queries: queries to make
     :return: QuerySet which is filtered of queryset
     """
+    # todo 5/31/18 felixraj : Change valid_queries from list to dict. dict having keys the name of the parameter that
+    # ... appear in the URL, and value the actual field in which the search is to be performed
     if not queries:
         return queryset
     q = list()
