@@ -114,4 +114,4 @@ venv.bak/
 out
 gen
 /*.sh
-!deploy_to_heroku.sh
+
