@@ -2,6 +2,7 @@ import datetime
 import logging
 
 from django.db import models
+from django.utils.functional import cached_property
 
 logger = logging.getLogger(__name__)
 
@@ -56,3 +57,7 @@ class Lent(models.Model):
         if self.duration == 0:
             self.duration = datetime.timedelta(days=self.DEFAULT_LENT_DURATION)
         super(Lent, self).save(*args, **kwargs)
+
+    @cached_property
+    def due_on(self):
+        return self.lent_on+self.duration

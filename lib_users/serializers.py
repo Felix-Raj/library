@@ -12,7 +12,7 @@ class LibUsersSerializer(serializers.ModelSerializer):
 class LentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lent
-        fields = ('lib_user', 'book', 'lent_on', 'duration')
+        fields = ('lib_user', 'book', 'lent_on', 'due_on')
 
     # todo 5/19/18 felixraj : add necessary validations if needed
     # todo 5/23/18 felixraj : validate weather book is actually available for lent
