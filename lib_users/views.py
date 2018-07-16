@@ -1,4 +1,5 @@
 import logging
+from datetime import timedelta
 
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
 
@@ -46,4 +47,4 @@ class LentCreateAPI(CreateAPIView):
     # http://www.django-rest-framework.org/api-guide/serializers/#validation
 
     def perform_create(self, serializer):
-        serializer.save(duration=serializer.validated_data.get('duration')*24*60*60)
+        serializer.save(duration=serializer.validated_data.get('duration', timedelta(seconds=Lent.DEFAULT_LENT_DURATION))*24*60*60)
