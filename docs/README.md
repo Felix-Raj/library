@@ -28,16 +28,20 @@ A _small_ library app backend. Half Baked.
     ```text
     /book/?booktag__tag=tag
     ```
-4. Or use a combination of any of 2, 3, 4
-6. See details of a book with pk `pk`
+5. Seach by book_id
+    ```text
+    /book/?book_id=book_id
+    ```
+6. Or use a combination of any of 2, 3, 4, 5
+7. See details of a book with pk `pk`
     ```text
     /book/pk
     ```
-7. Create a new Book
+8. Create a new Book
     ```text
     /book/new
     ```
-7. Add tag to a book with pk `pk`
+9. Add tag to a book with pk `pk`
     ```text
     /book/pk/tag/?tags=tag1,tag2, tag 3
     ```

@@ -2,6 +2,8 @@ from django.db import models
 
 
 class Book(models.Model):
+    book_id = models.CharField(null=False, blank=False, max_length=100, default=0)
+    # todo 7/16/18 felixraj : mark book id as unique
     title = models.TextField()
     author = models.TextField()
     copies = models.IntegerField(default=1)
