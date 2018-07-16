@@ -48,7 +48,24 @@ A _small_ library app backend. Half Baked.
     /lib_user/
     ```
     
-2. Create a new user
+2. Search for user in list using pk
+    ```text
+    /lib_user/?pk=pk
+    ```
+    
+3. Search for user in list using name
+    ```text
+    /lib_user/?name=name
+    ```
+    
+4. Search for user in list using uid
+    ```text
+    /lib_user/?uid=uid
+    ```
+    
+5. Combine any of 2,3 and 4 
+    
+6. Create a new user
     ```text
     /lib_user/new
     ```

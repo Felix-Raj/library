@@ -3,6 +3,7 @@ from functools import reduce
 
 from django.db.models import Q
 from django.db.models.fields.related import RelatedField
+from pip._vendor.pyparsing import Each
 
 logger = logging.getLogger(__name__)
 
@@ -20,13 +21,16 @@ def filter_qs(queryset, valid_queries, **queries):
     if not queries:
         return queryset
     q = list()
-    for k, v in queries.items():
-        if k in valid_queries:
-            v = v[0]
-            if isinstance(getattr(queryset.model, k).field, RelatedField):
-                q.append(Q(**{k: v}))
+    if 'pk' in queries.keys():
+        q.append(Q(pk=queries.pop('pk')[0]))
+    for query_key, query_value in queries.items():
+        if query_key in valid_queries:
+            query_value = query_value[0]
+            has_attribute_field_and_is_related_field = hasattr(getattr(queryset.model, query_key), 'field') and isinstance(getattr(queryset.model, query_key).field, RelatedField)
+            if has_attribute_field_and_is_related_field:
+                q.append(Q(**{query_key: query_value}))
             else:
-                q.append(Q(**{k + '__icontains': v}))
+                q.append(Q(**{query_key + '__icontains': query_value}))
     if q:
         queryset = queryset.filter(
             reduce(lambda x, y: x & y, q)
