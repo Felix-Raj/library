@@ -1,4 +1,9 @@
+import logging
+
+from django.core.exceptions import ValidationError
 from django.db import models
+
+logger = logging.getLogger(__name__)
 
 
 class Book(models.Model):
@@ -31,6 +36,23 @@ class Book(models.Model):
 
     def unlock(self):
         self.locked = False
+
+    def return_book(self, count=1):
+        self.copies_on_lent -= count
+        self.save()
+
+    def lent_book(self, count=1):
+        """
+        Increases the copies_on_lent by one, only if book is available to lent.
+
+        :param count: count of book to lent out
+        :return:
+        """
+        if self.is_available:
+            self.copies_on_lent += count
+            self.save()
+        else:
+            logger.warning(msg='Book Not available')
 
     @property
     def is_available(self):

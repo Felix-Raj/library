@@ -1,7 +1,7 @@
 import logging
 from datetime import timedelta
 
-from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
 
 from helpers.filters import filter_qs
 from lib_users.models import Lent, LibUsers
@@ -47,4 +47,9 @@ class LentCreateAPI(CreateAPIView):
     # http://www.django-rest-framework.org/api-guide/serializers/#validation
 
     def perform_create(self, serializer):
-        serializer.save(duration=serializer.validated_data.get('duration', timedelta(seconds=Lent.DEFAULT_LENT_DURATION))*24*60*60)
+        # serializer.save(duration=serializer.validated_data.get('duration', timedelta(seconds=Lent.DEFAULT_LENT_DURATION))*24*60*60)
+        serializer.save(duration=serializer.validated_data.get('duration', timedelta(days=0)))
+
+
+class LentReceivedAPI(DestroyAPIView):
+    queryset = Lent.objects.all()

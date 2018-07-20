@@ -1,6 +1,7 @@
 import datetime
 import logging
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 
@@ -38,11 +39,18 @@ class LibUsers(models.Model):
     # todo 5/19/18 felixraj : Define exceptions to use with this class
 
 
+def book_available(book):
+    if book.is_available:
+        return True
+    else:
+        raise ValidationError(message='Book not available')
+
+
 class Lent(models.Model):
     DEFAULT_LENT_DURATION = 14
 
     lib_user = models.ForeignKey(LibUsers, on_delete=models.CASCADE)
-    book = models.ForeignKey('book.Book', on_delete=models.CASCADE)
+    book = models.ForeignKey('book.Book', on_delete=models.CASCADE, validators=[book_available])
     lent_on = models.DateField(auto_now_add=True)
     duration = models.DurationField(default=DEFAULT_LENT_DURATION)
 
@@ -56,9 +64,15 @@ class Lent(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        if self.duration == 0:
+        if self.duration == datetime.timedelta(days=0):
             self.duration = datetime.timedelta(days=self.DEFAULT_LENT_DURATION)
+
+        self.book.lent_book()
         super(Lent, self).save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        self.book.return_book()
+        super(Lent, self).delete(using, keep_parents)
 
     @cached_property
     def due_on(self):
