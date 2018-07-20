@@ -7,6 +7,7 @@ class Book(models.Model):
     title = models.TextField()
     author = models.TextField()
     copies = models.IntegerField(default=1)
+    notes = models.TextField()
 
     def __str__(self):
         return '{book} by {author}'.format(book=self.title, author=self.author)

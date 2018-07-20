@@ -6,7 +6,7 @@ from lib_users.models import LibUsers, Lent
 class LibUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = LibUsers
-        fields = ('name', 'uid', 'id')
+        fields = ('name', 'uid', 'id', 'avatar')
 
 
 class LentSerializer(serializers.ModelSerializer):
