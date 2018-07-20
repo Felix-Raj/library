@@ -9,5 +9,5 @@ urlpatterns = [
     path('new/', BookCreateView.as_view(), name='book_new'),
     path('<int:pk>/tag/', BookAddTagView.as_view(), name='book_add_tag_api'),
     path('<int:pk>/lock/', LockBook.as_view(), name='lock_book_api'),
-    path('<int:pk>/unlock/', LockBook.as_view(), name='lock_book_api'),
+    path('<int:pk>/unlock/', LockBook.as_view(), name='unlock_book_api'),
 ]
