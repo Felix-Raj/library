@@ -52,8 +52,15 @@ class BookAddTagView(APIView):
     serializer_class = BookSerializer
 
     def get(self, request, *args, **kwargs):
-        logger.debug('request.GET')
-        logger.debug(request.GET)
         book = get_object_or_404(Book.objects.all(), pk=kwargs.get('pk'))
         book.add_tag(request.GET.get('tags').split(','))
         return Response(data=BookSerializer(instance=book).data)
+
+
+class LockBook(APIView):
+    serializer_class = BookSerializer
+
+    def get(self, request, *args, **kwargs):
+        book = get_object_or_404(Book.objects.all(), pk=kwargs.get('pk'))
+        book.lock()
+        return Response(data=self.serializer_class(instance=book).data)
