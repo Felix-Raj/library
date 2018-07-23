@@ -28,11 +28,17 @@ A _small_ library app backend. Half Baked.
     ```text
     /book/?booktag__tag=tag
     ```
-5. Seach by book_id
+5. Search by book_id
     ```text
     /book/?book_id=book_id
     ```
-6. Or use a combination of any of 2, 3, 4, 5
+6. Search by category
+    ```text
+    /book/?category=category
+    ```
+    Where category can be `magazine`, `book`, `comics`.
+    
+6. Or use a combination of any of 2, 3, 4, 5, 6
 7. See details of a book with pk `pk`
     ```text
     /book/pk

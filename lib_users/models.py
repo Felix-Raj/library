@@ -12,7 +12,7 @@ class LibUsers(models.Model):
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
     avatar = models.ImageField(upload_to='avatars', null=True)
-    # todo 7/20/18 felixraj : check the avatar.url() method on an instance
+
 
     def __str__(self):
         return 'User {uid} ({name})'.format(uid=self.uid, name=self.name)

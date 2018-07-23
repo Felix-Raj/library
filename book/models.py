@@ -16,7 +16,13 @@ class Book(models.Model):
     author = models.TextField()
     copies = models.IntegerField(default=1)
     notes = models.TextField()
-    copies_on_lent =  models.IntegerField(default=1)
+    copies_on_lent =  models.IntegerField(default=0)
+    category = models.CharField(choices=(
+        # ('db value','human readable value')
+        (MAGAZINE, MAGAZINE.capitalize()),
+        (COMICS, COMICS.capitalize()),
+        (BOOKS, BOOKS.capitalize())
+    ), default=BOOKS, max_length=10)
     locked = models.BooleanField(default=False)
 
     def __str__(self):

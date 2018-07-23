@@ -17,7 +17,7 @@ logger.debug("This is a sample debug message")
 def filter_book_list(queryset: QuerySet, **kwargs) -> QuerySet:
     if not kwargs:
         return queryset
-    valid_queries = ['author', 'title', 'booktag__tag', 'book_id']
+    valid_queries = ['author', 'title', 'booktag__tag', 'book_id', 'category']
     q = list()
     for k, v in kwargs.items():
         if k in valid_queries:
