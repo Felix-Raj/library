@@ -79,11 +79,17 @@ A _small_ library app backend. Half Baked.
     ```text
     /lib_user/new
     ```
-    
+        
 7. Get users with upcoming birthdays
     ```text
     /lib_user/birthdays/
     ```
+
+8. List books lent by a user, using users pk
+    ```text
+    /pk/lent/pending/
+    ```    
+
 
 ##### Lent Related #####
 1. List all lents

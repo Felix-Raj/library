@@ -2,6 +2,7 @@ import logging
 from datetime import timedelta, datetime
 
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -63,6 +64,7 @@ class LentReceivedAPI(DestroyAPIView):
 
 class BirthdayAlertAPI(APIView):
     def get(self, *args, **kwargs):
+        # todo 7/28/18 felixraj : may apply pagination
         today = datetime.today().date()
         target_one = today + timedelta(days=0)
         target_end = today + timedelta(days=7)
@@ -70,9 +72,18 @@ class BirthdayAlertAPI(APIView):
         users = list()
         for user in LibUsers.objects.all().order_by('-date_of_birth'):
             user_next_birthday = datetime(year=today.year, month=user.date_of_birth.month, day=user.date_of_birth.day).date()
+            if user_next_birthday >= target_end:
+                break
             if target_one <= user_next_birthday <= target_end:
                 users.append(user)
 
         users.sort(key=lambda x: x.date_of_birth.month)
 
         return Response(data=LibUsersSerializer(instance=list(users), many=True).data)
+
+
+class LentToUserAPI(APIView):
+    def get(self, *args, **kwargs):
+        # todo 7/28/18 felixraj : may apply pagination
+        user = get_object_or_404(LibUsers, pk=self.kwargs.get('pk'))
+        return Response(data=LentListSerializer(instance=user.lent_status(), many=True).data)

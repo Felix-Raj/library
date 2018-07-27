@@ -36,6 +36,12 @@ class LibUsers(models.Model):
             logger.warning(msg="An exception occurred during creating lent")
             pass
 
+    def lent_status(self):
+        """
+        Find weather the user had already lent some books. Then returns a queryset
+        containing the books lent
+        """
+        return self.lent_set.all()
     # todo 5/19/18 felixraj : Define exceptions to use with this class
 
 
