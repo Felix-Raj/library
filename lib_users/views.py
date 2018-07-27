@@ -31,6 +31,10 @@ class LibUserListView(ListAPIView):
 class LibUsersCreateView(CreateAPIView):
     serializer_class = LibUsersSerializer
 
+    def perform_create(self, serializer):
+        super(LibUsersCreateView, self).perform_create(serializer)
+        print(serializer.data)
+
 
 class LentListView(ListAPIView):
     serializer_class = LentListSerializer

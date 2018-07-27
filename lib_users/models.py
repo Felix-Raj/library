@@ -12,7 +12,7 @@ class LibUsers(models.Model):
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
     avatar = models.ImageField(upload_to='avatars', null=True)
-
+    date_of_birth = models.DateField(default=datetime.datetime.today)
 
     def __str__(self):
         return 'User {uid} ({name})'.format(uid=self.uid, name=self.name)
