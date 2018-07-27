@@ -1,7 +1,10 @@
 import logging
-from datetime import timedelta
+from datetime import timedelta, datetime
 
+from django.db.models import Q
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from helpers.filters import filter_qs
 from lib_users.models import Lent, LibUsers
@@ -33,7 +36,6 @@ class LibUsersCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         super(LibUsersCreateView, self).perform_create(serializer)
-        print(serializer.data)
 
 
 class LentListView(ListAPIView):
@@ -57,3 +59,20 @@ class LentCreateAPI(CreateAPIView):
 
 class LentReceivedAPI(DestroyAPIView):
     queryset = Lent.objects.all()
+
+
+class BirthdayAlertAPI(APIView):
+    def get(self, *args, **kwargs):
+        today = datetime.today().date()
+        target_one = today + timedelta(days=0)
+        target_end = today + timedelta(days=7)
+
+        users = list()
+        for user in LibUsers.objects.all().order_by('-date_of_birth'):
+            user_next_birthday = datetime(year=today.year, month=user.date_of_birth.month, day=user.date_of_birth.day).date()
+            if target_one <= user_next_birthday <= target_end:
+                users.append(user)
+
+        users.sort(key=lambda x: x.date_of_birth.month)
+
+        return Response(data=LibUsersSerializer(instance=list(users), many=True).data)
