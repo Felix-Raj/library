@@ -16,7 +16,7 @@ class LibUsers(models.Model):
 
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
-    avatar = JSONField()
+    # avatar = JSONField()
     user_type = models.CharField(
         choices=(
             (STUDENT, STUDENT.upper()),
