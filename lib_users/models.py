@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class LibUsers(models.Model):
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
-    avatar = JSONField()
+    user_image = JSONField()
     date_of_birth = models.DateField(default=datetime.datetime.today)
 
     def __str__(self):
