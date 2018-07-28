@@ -10,9 +10,21 @@ logger = logging.getLogger(__name__)
 
 
 class LibUsers(models.Model):
+    STUDENT = 'student'
+    TEACHER = 'teacher'
+    DEFAULT = 'default'
+
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
     avatar = JSONField()
+    user_type = models.CharField(
+        choices=(
+            (STUDENT, STUDENT.upper()),
+            (TEACHER, TEACHER.upper()),
+            (DEFAULT, DEFAULT.upper()),
+        ),
+        default=DEFAULT
+    )
     date_of_birth = models.DateField(default=datetime.datetime.today)
 
     def __str__(self):
