@@ -72,8 +72,6 @@ class BirthdayAlertAPI(APIView):
         users = list()
         for user in LibUsers.objects.all().order_by('-date_of_birth'):
             user_next_birthday = datetime(year=today.year, month=user.date_of_birth.month, day=user.date_of_birth.day).date()
-            if user_next_birthday >= target_end:
-                break
             if target_one <= user_next_birthday <= target_end:
                 users.append(user)
 
