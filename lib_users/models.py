@@ -61,7 +61,7 @@ class Lent(models.Model):
     duration = models.DurationField(default=DEFAULT_LENT_DURATION)
 
     class Meta:
-        ordering = ('lib_user',)
+        ordering = ('lent_on',)
 
     def __str__(self):
         return '{book} with {lib_user}'.format(

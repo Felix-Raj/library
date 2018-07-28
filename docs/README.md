@@ -87,8 +87,13 @@ A _small_ library app backend. Half Baked.
 
 8. List books lent by a user, using users pk
     ```text
-    /pk/lent/pending/
-    ```    
+    /lib_user/pk/lent/pending/
+    ```
+
+9. See recent birthdays
+    ```text
+       /lib_user/birthdays/
+    ```
 
 
 ##### Lent Related #####
@@ -122,6 +127,11 @@ A _small_ library app backend. Half Baked.
 4. Create new Lent
     ```text
     /lib_user/lent/new/
+    ```
+
+5. Upcoming or Missed Dues
+    ```text
+    /lib_user/lent/recent_dues/
     ```
 
 ### Demo ###

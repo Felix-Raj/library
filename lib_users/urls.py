@@ -1,6 +1,6 @@
 from django.urls import path
 
-from lib_users.views import LentListView, LentCreateAPI, LibUserListView, LibUsersCreateView, LentReceivedAPI, BirthdayAlertAPI, LentToUserAPI
+from lib_users.views import LentListView, LentCreateAPI, LibUserListView, LibUsersCreateView, LentReceivedAPI, BirthdayAlertAPI, LentToUserAPI, LentDueAPI
 
 app_name = 'lib_users'
 urlpatterns = [
@@ -11,4 +11,5 @@ urlpatterns = [
     path('lent/new/', LentCreateAPI.as_view(), name='lent_create'),
     path('<int:pk>/lent/pending/', LentToUserAPI.as_view(), name='lent_to_user'),
     path('lent/return/<int:pk>/', LentReceivedAPI.as_view(), name='lent_receive'),
+    path('lent/recent_dues/', LentDueAPI.as_view(), name='lent_recent_dues'),
 ]

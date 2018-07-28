@@ -55,7 +55,13 @@ class LentCreateAPI(CreateAPIView):
 
     def perform_create(self, serializer):
         # serializer.save(duration=serializer.validated_data.get('duration', timedelta(seconds=Lent.DEFAULT_LENT_DURATION))*24*60*60)
-        serializer.save(duration=serializer.validated_data.get('duration', timedelta(days=0)))
+        duration: timedelta = serializer.validated_data.get('duration', timedelta(days=0))
+        if duration.days == 0:
+            if duration.seconds != 0:
+                duration = timedelta(days=duration.seconds)
+            elif duration.microseconds != 0:
+                duration = timedelta(days=duration.microseconds)
+        serializer.save(duration=duration)
 
 
 class LentReceivedAPI(DestroyAPIView):
@@ -85,3 +91,22 @@ class LentToUserAPI(APIView):
         # todo 7/28/18 felixraj : may apply pagination
         user = get_object_or_404(LibUsers, pk=self.kwargs.get('pk'))
         return Response(data=LentListSerializer(instance=user.lent_status(), many=True).data)
+
+
+class LentDueAPI(APIView):
+    model = Lent
+    serializer = LentListSerializer
+
+    def get_queryset(self):
+        return self.model.objects.all().order_by('lent_on')
+
+    def get(self, *args, **kwargs):
+        today = datetime.today().date()
+        target_date = today + timedelta(days=7)
+
+        lents = list()
+        for lent in self.get_queryset():
+            if today <= lent.due_on <= target_date:
+                lents.append(lent)
+
+        return Response(data=self.serializer(instance=lents, many=True).data)
