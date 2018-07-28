@@ -13,19 +13,16 @@ class LibUsers(models.Model):
     STUDENT = 'student'
     TEACHER = 'teacher'
     DEFAULT = 'default'
+    USER_CHOICES=(
+        (STUDENT, STUDENT.upper()),
+        (TEACHER, TEACHER.upper()),
+        (DEFAULT, DEFAULT.upper()),
+    )
 
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
     avatar = JSONField(default={})
-    user_type = models.CharField(
-        choices=(
-            (STUDENT, STUDENT.upper()),
-            (TEACHER, TEACHER.upper()),
-            (DEFAULT, DEFAULT.upper()),
-        ),
-        default=DEFAULT,
-        max_length=100
-    )
+    user_type = models.CharField(choices=USER_CHOICES, default=DEFAULT, max_length=100)
     date_of_birth = models.DateField(default=datetime.datetime.today)
 
     def __str__(self):

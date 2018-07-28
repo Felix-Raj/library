@@ -1,5 +1,6 @@
 import logging
 
+from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -10,6 +11,11 @@ class Book(models.Model):
     MAGAZINE = 'magazine'
     COMICS = 'comics'
     BOOKS = 'books'
+    BOOK_CATEGORIES = (
+        (MAGAZINE, MAGAZINE.capitalize()),
+        (COMICS, COMICS.capitalize()),
+        (BOOKS, BOOKS.capitalize())
+    )
 
     book_id = models.CharField(null=False, blank=False, max_length=100, default=0, unique=True)
     title = models.TextField()
@@ -17,13 +23,9 @@ class Book(models.Model):
     copies = models.IntegerField(default=1)
     notes = models.TextField()
     copies_on_lent =  models.IntegerField(default=0)
-    category = models.CharField(choices=(
-        # ('db value','human readable value')
-        (MAGAZINE, MAGAZINE.capitalize()),
-        (COMICS, COMICS.capitalize()),
-        (BOOKS, BOOKS.capitalize())
-    ), default=BOOKS, max_length=10)
+    category = models.CharField(choices=BOOK_CATEGORIES, default=BOOKS, max_length=10)
     locked = models.BooleanField(default=False)
+    preview = JSONField(default={})
 
     def __str__(self):
         return '{book} by {author}'.format(book=self.title, author=self.author)
