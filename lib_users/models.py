@@ -23,7 +23,8 @@ class LibUsers(models.Model):
             (TEACHER, TEACHER.upper()),
             (DEFAULT, DEFAULT.upper()),
         ),
-        default=DEFAULT
+        default=DEFAULT,
+        max_length=100
     )
     date_of_birth = models.DateField(default=datetime.datetime.today)
 
