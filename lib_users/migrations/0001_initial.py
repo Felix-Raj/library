@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('uid', models.CharField(max_length=100)),
-                ('avatar', django.contrib.postgres.fields.jsonb.JSONField()),
+                # ('avatar', django.contrib.postgres.fields.jsonb.JSONField()),
                 ('date_of_birth', models.DateField(default=datetime.datetime.today)),
             ],
         ),
