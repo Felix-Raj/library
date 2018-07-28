@@ -1,6 +1,7 @@
 import datetime
 import logging
 
+from django.contrib.postgres.fields import JSONField
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -11,7 +12,7 @@ logger = logging.getLogger(__name__)
 class LibUsers(models.Model):
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
-    avatar = models.ImageField(upload_to='avatars', null=True)
+    avatar = JSONField()
     date_of_birth = models.DateField(default=datetime.datetime.today)
 
     def __str__(self):
