@@ -24,6 +24,9 @@ class LibUsers(models.Model):
     avatar = JSONField(default={})
     user_type = models.CharField(choices=USER_CHOICES, default=DEFAULT, max_length=100)
     date_of_birth = models.DateField(default=datetime.datetime.today)
+    # todo 8/8/18 felixraj : change blank,null = True
+    father = models.CharField(max_length=100, blank=True, null=True)
+    mother = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return 'User {uid} ({name})'.format(uid=self.uid, name=self.name)
