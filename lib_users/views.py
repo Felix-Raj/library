@@ -1,7 +1,6 @@
 import logging
 from datetime import timedelta, datetime
 
-from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
