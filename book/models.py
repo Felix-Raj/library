@@ -1,7 +1,6 @@
 import logging
 
 from django.contrib.postgres.fields import JSONField
-from django.core.exceptions import ValidationError
 from django.db import models
 
 logger = logging.getLogger(__name__)
