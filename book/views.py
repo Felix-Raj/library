@@ -2,6 +2,7 @@ import logging
 from functools import reduce
 
 from django.db.models import QuerySet, Q
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -32,10 +33,12 @@ def filter_book_list(queryset: QuerySet, **kwargs) -> QuerySet:
 
 class BookListView(ListAPIView):
     serializer_class = BookSerializer
+    filter_backends = (OrderingFilter, SearchFilter)
+    search_fields = ('author', 'title', 'booktag__tag', 'book_id', 'category')
+    ordering_fields = ('author', 'title', 'book_id', 'category')
 
     def get_queryset(self):
         queryset = Book.objects.all()
-        queryset = filter_book_list(queryset, **self.request.GET)
         return queryset
 
 

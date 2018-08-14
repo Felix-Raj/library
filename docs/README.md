@@ -73,24 +73,36 @@ A _small_ library app backend. Half Baked.
     /lib_user/?uid=uid
     ```
     
-5. Combine any of 2,3 and 4 
+5. Combine any of 2,3 and 4
+
+6. Search for any using
+    ```text
+    /lib_user/?search=term
+     ```
+     term can be `author`, `title`, `booktag`, `book_id`, `category` 
+     
+7. Specify ordering by
+    ```term
+    /lib_user/?ordering=field_one, field_two
+    ```
+    field can be any of `author`, `title`, `book_id`, `category`
     
-6. Create a new user
+8. Create a new user
     ```text
     /lib_user/new
     ```
         
-7. Get users with upcoming birthdays
+8. Get users with upcoming birthdays
     ```text
     /lib_user/birthdays/
     ```
 
-8. List books lent by a user, using users pk
+9. List books lent by a user, using users pk
     ```text
     /lib_user/pk/lent/pending/
     ```
 
-9. See recent birthdays
+10. See recent birthdays
     ```text
        /lib_user/birthdays/
     ```

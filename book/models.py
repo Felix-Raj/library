@@ -10,9 +10,11 @@ class Book(models.Model):
     MAGAZINE = 'magazine'
     COMICS = 'comics'
     BOOKS = 'books'
+    EDUCATIONAL = 'educational'
     BOOK_CATEGORIES = (
         (MAGAZINE, MAGAZINE.capitalize()),
         (COMICS, COMICS.capitalize()),
+        (EDUCATIONAL, EDUCATIONAL.capitalize()),
         (BOOKS, BOOKS.capitalize())
     )
 
