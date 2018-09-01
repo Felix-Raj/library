@@ -39,6 +39,7 @@ class BookListView(ListAPIView):
 
     def get_queryset(self):
         queryset = Book.objects.all()
+        queryset = filter_book_list(queryset, self.kwargs)
         return queryset
 
 
