@@ -119,31 +119,48 @@ A _small_ library app backend. Half Baked.
     /lib_user/lent/?lib_user=pk
     ```
     
-2. List all lents - search  for book with pk `pk`
+3. List all lents - search  for book with pk `pk`
     ```text
     /lib_user/lent/?book=pk
     ```
     
-2. List all lents - search for user with name containing `name`
+4. List all lents - search for user with name containing `name`
     ```text
     /lib_user/lent/?lib_user__name=name
     ```
     
-2. List all lents - search for book with name containing `name`
+5. List all lents - search for book with name containing `name`
     ```text
     /lib_user/lent/?book_title=name
     ```
     
-3. List all lents - can mix any of the above queries
+6. List all lents - can mix any of the above queries
 
-4. Create new Lent
+7. Create new Lent
     ```text
     /lib_user/lent/new/
     ```
 
-5. Upcoming or Missed Dues
+8. Upcoming or Missed Dues
     ```text
     /lib_user/lent/recent_dues/
+    ```
+
+### Notes ###
+Users can add note
+1. List all notes
+    ```text
+    /note/
+    ```
+    
+2. Create new note
+    ```text
+    /note/new/
+    ```
+    
+3. Delete note
+    ```text
+     /note/pk/delete
     ```
 
 ### Demo ###
