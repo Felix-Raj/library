@@ -22,5 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('book/', include('book.urls')),
     path('lib_user/', include('lib_users.urls')),
+    path('note/', include('note.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # serves static only with DEBUG=True

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     'book.apps.BookConfig',
     'lib_users.apps.LibUsersConfig',
+    'note.apps.NoteConfig',
 ]
 
 MIDDLEWARE = [
@@ -145,7 +146,7 @@ from django_heroku import settings
 settings(locals())
 import dj_database_url
 from dj_database_url import config
-DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True, default=config(env='DATABASE_URL', default='postgres://library:library@localhost/library'))
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 try:
     from local_settings import *
