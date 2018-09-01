@@ -16,6 +16,7 @@ logger.debug("This is a sample debug message")
 
 
 def filter_book_list(queryset: QuerySet, **kwargs) -> QuerySet:
+    logger.info('views.py:filter_book_list    kwargs {}'.format(kwargs))
     if not kwargs:
         return queryset
     valid_queries = ['author', 'title', 'booktag__tag', 'book_id', 'category']
@@ -38,8 +39,9 @@ class BookListView(ListAPIView):
     ordering_fields = ('author', 'title', 'book_id', 'category')
 
     def get_queryset(self):
+        logger.info('views.py:get_queryset    kwargs {}'.format(self.request.query_params))
         queryset = Book.objects.all()
-        queryset = filter_book_list(queryset, **self.kwargs)
+        queryset = filter_book_list(queryset, **self.request.query_params)
         return queryset
 
 
