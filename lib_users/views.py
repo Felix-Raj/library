@@ -105,7 +105,7 @@ class LentDueAPI(APIView):
 
         lents = list()
         for lent in self.get_queryset():
-            if today <= lent.due_on <= target_date:
+            if lent.due_on <= target_date:
                 lents.append(lent)
 
         return Response(data=self.serializer(instance=lents, many=True).data)
