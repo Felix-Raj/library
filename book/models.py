@@ -23,7 +23,7 @@ class Book(models.Model):
     author = models.TextField()
     copies = models.IntegerField(default=1)
     notes = models.TextField()
-    copies_on_lent =  models.IntegerField(default=0)
+    copies_on_lent = models.IntegerField(default=0)
     category = models.CharField(choices=BOOK_CATEGORIES, default=BOOKS, max_length=10)
     locked = models.BooleanField(default=False)
     preview = JSONField(default={})
@@ -39,11 +39,17 @@ class Book(models.Model):
     def has_tag(self, tag):
         return self.booktag_set.all().filter(tag__iexact=tag.lower()).count() > 0
 
+    def _toggle_lock_state(self):
+        self.locked = not self.locked
+        self.save()
+
     def lock(self):
-        self.locked = True
+        if not self.locked:
+            self._toggle_lock_state()
 
     def unlock(self):
-        self.locked = False
+        if self.locked:
+            self._toggle_lock_state()
 
     def return_book(self, count=1):
         self.copies_on_lent -= count
