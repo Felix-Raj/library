@@ -25,6 +25,7 @@ class Book(models.Model):
     notes = models.TextField()
     copies_on_lent = models.IntegerField(default=0)
     category = models.CharField(choices=BOOK_CATEGORIES, default=BOOKS, max_length=10)
+    price = models.FloatField(default=0)
     locked = models.BooleanField(default=False)
     preview = JSONField(default={})
 
