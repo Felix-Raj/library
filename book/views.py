@@ -3,7 +3,8 @@ from functools import reduce
 
 from django.db.models import QuerySet, Q
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, get_object_or_404, UpdateAPIView, \
+    DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -31,6 +32,8 @@ def filter_book_list(queryset: QuerySet, **kwargs) -> QuerySet:
         )
     return queryset
 
+# todo 9/13/18 felixraj : user viewset an in notes
+
 
 class BookListView(ListAPIView):
     serializer_class = BookSerializer
@@ -52,6 +55,15 @@ class BookDetailView(RetrieveAPIView):
 
 class BookCreateView(CreateAPIView):
     serializer_class = BookSerializer
+
+
+class BookEditView(UpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+
+
+class BookDeleteView(DestroyAPIView):
+    pass
 
 
 class BookAddTagView(APIView):
