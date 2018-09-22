@@ -21,8 +21,9 @@ class LibUsers(models.Model):
 
     name = models.CharField(max_length=100)
     uid = models.CharField(null=False, blank=False, max_length=100)
-    avatar = JSONField(default={})
+    avatar = JSONField(default={}, null=True)
     user_type = models.CharField(choices=USER_CHOICES, default=DEFAULT, max_length=100)
+    account_activated = models.BooleanField(default=False)
     date_of_birth = models.DateField(default=datetime.datetime.today)
     # todo 8/8/18 felixraj : change blank,null = True
     father = models.CharField(max_length=100, blank=True, null=True)
@@ -56,6 +57,27 @@ class LibUsers(models.Model):
         containing the books lent
         """
         return self.lent_set.all()
+
+    def _toggle_activation_state(self):
+        """
+        Toggle the activation state of a user account
+        """
+        self.account_activated = not self.account_activated
+        self.save()
+
+    def activate_account(self):
+        """
+        Helper function to activate account
+        """
+        if not self.account_activated:
+            self._toggle_activation_state()
+
+    def de_activate_account(self):
+        """
+        Helper to deactivate account.
+        """
+        if self.account_activated:
+            self._toggle_activation_state()
     # todo 5/19/18 felixraj : Define exceptions to use with this class
 
 

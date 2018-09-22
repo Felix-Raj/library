@@ -88,6 +88,7 @@ class UnLockBook(APIView):
     serializer_class = BookSerializer
 
     def get(self, request, *args, **kwargs):
+        # TODO: change this to put
         book = get_object_or_404(Book.objects.all(), pk=kwargs.get('pk'))
         book.unlock()
         return Response(data=self.serializer_class(instance=book).data)

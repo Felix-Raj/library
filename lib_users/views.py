@@ -109,3 +109,15 @@ class LentDueAPI(APIView):
                 lents.append(lent)
 
         return Response(data=self.serializer(instance=lents, many=True).data)
+
+
+class AccountActivateDeactivateAPI(APIView):
+    serializer_class = LibUsersSerializer
+
+    def put(self, request, *args, **kwargs):
+        user: LibUsers = get_object_or_404(LibUsers, pk=kwargs.get('pk'))
+        if kwargs.get('state') == 'activate':
+            user.activate_account()
+        else:
+            user.de_activate_account()
+        return Response(data=self.serializer_class(user).data)
