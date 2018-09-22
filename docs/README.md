@@ -106,6 +106,16 @@ A _small_ library app backend. Half Baked.
     ```text
        /lib_user/birthdays/
     ```
+    
+11. Activate an user
+    ```text
+        /lib_user/pk/activate/
+    ```
+    
+12. Deactivate an user
+    ```text
+        /lib_user/pk/deactivate
+    ```
 
 
 ##### Lent Related #####
