@@ -29,6 +29,9 @@ class LibUsers(models.Model):
     father = models.CharField(max_length=100, blank=True, null=True)
     mother = models.CharField(max_length=100, blank=True, null=True)
 
+    class Meta:
+        ordering=('name',)
+
     def __str__(self):
         return 'User {uid} ({name})'.format(uid=self.uid, name=self.name)
 
