@@ -81,6 +81,28 @@ class LibUsers(models.Model):
         """
         if self.account_activated:
             self._toggle_activation_state()
+
+    @staticmethod
+    def can_lent(libuser):
+        """
+        Return True if this user can lent books.
+
+        :param libuser: user for which the check is made
+        :return: True or raises ValidationError
+
+        :raises ValidationError: if any condition is not satisfied
+        """
+        test_to_perform = [
+            (libuser.account_activated, 'Account not activated'),
+            # (Result of test function, 'Error message')
+        ]
+        errors = list()
+        for test, error_message in test_to_perform:
+            if not test:
+                errors.append(error_message)
+        if errors:
+            raise ValidationError(message=errors)
+        return True
     # todo 5/19/18 felixraj : Define exceptions to use with this class
 
 
@@ -94,7 +116,7 @@ def book_available(book):
 class Lent(models.Model):
     DEFAULT_LENT_DURATION = 14
 
-    lib_user = models.ForeignKey(LibUsers, on_delete=models.CASCADE)
+    lib_user = models.ForeignKey(LibUsers, on_delete=models.CASCADE, validators=[LibUsers.can_lent])
     book = models.ForeignKey('book.Book', on_delete=models.CASCADE, validators=[book_available])
     lent_on = models.DateField(auto_now_add=True)
     duration = models.DurationField(default=DEFAULT_LENT_DURATION)
