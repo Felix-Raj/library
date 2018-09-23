@@ -38,6 +38,18 @@ class LibUsersCreateView(CreateAPIView):
         super(LibUsersCreateView, self).perform_create(serializer)
 
 
+class AccountActivateDeactivateAPI(APIView):
+    serializer_class = LibUsersSerializer
+
+    def put(self, request, *args, **kwargs):
+        user: LibUsers = get_object_or_404(LibUsers, pk=kwargs.get('pk'))
+        if kwargs.get('state') == 'activate':
+            user.activate_account()
+        else:
+            user.de_activate_account()
+        return Response(data=self.serializer_class(user).data)
+
+
 class LentListView(ListAPIView):
     serializer_class = LentListSerializer
 
@@ -67,24 +79,6 @@ class LentReceivedAPI(DestroyAPIView):
     queryset = Lent.objects.all()
 
 
-class BirthdayAlertAPI(APIView):
-    def get(self, *args, **kwargs):
-        # todo 7/28/18 felixraj : may apply pagination
-        today = datetime.today().date()
-        target_one = today + timedelta(days=0)
-        target_end = today + timedelta(days=7)
-
-        users = list()
-        for user in LibUsers.objects.all().order_by('-date_of_birth'):
-            user_next_birthday = datetime(year=today.year, month=user.date_of_birth.month, day=user.date_of_birth.day).date()
-            if target_one <= user_next_birthday <= target_end:
-                users.append(user)
-
-        users.sort(key=lambda x: x.date_of_birth.month)
-
-        return Response(data=LibUsersSerializer(instance=list(users), many=True).data)
-
-
 class LentToUserAPI(APIView):
     def get(self, *args, **kwargs):
         # todo 7/28/18 felixraj : may apply pagination
@@ -111,13 +105,30 @@ class LentDueAPI(APIView):
         return Response(data=self.serializer(instance=lents, many=True).data)
 
 
-class AccountActivateDeactivateAPI(APIView):
-    serializer_class = LibUsersSerializer
+class LentRenewAPI(APIView):
+    model = Lent
+    serializer_class = LentSerializer
 
-    def put(self, request, *args, **kwargs):
-        user: LibUsers = get_object_or_404(LibUsers, pk=kwargs.get('pk'))
-        if kwargs.get('state') == 'activate':
-            user.activate_account()
-        else:
-            user.de_activate_account()
-        return Response(data=self.serializer_class(user).data)
+    def put(self, *args, **kwargs):
+        lent: Lent = get_object_or_404(self.model, pk=self.kwargs.get('pk'))
+        period = self.request.data.get('period', timedelta(days=7))
+        lent.renew_lent(period=period)
+        return Response(data=self.serializer_class(instance=lent).data)
+
+
+class BirthdayAlertAPI(APIView):
+    def get(self, *args, **kwargs):
+        # todo 7/28/18 felixraj : may apply pagination
+        today = datetime.today().date()
+        target_one = today + timedelta(days=0)
+        target_end = today + timedelta(days=7)
+
+        users = list()
+        for user in LibUsers.objects.all().order_by('-date_of_birth'):
+            user_next_birthday = datetime(year=today.year, month=user.date_of_birth.month, day=user.date_of_birth.day).date()
+            if target_one <= user_next_birthday <= target_end:
+                users.append(user)
+
+        users.sort(key=lambda x: x.date_of_birth.month)
+
+        return Response(data=LibUsersSerializer(instance=list(users), many=True).data)

@@ -144,3 +144,14 @@ class Lent(models.Model):
     @cached_property
     def due_on(self):
         return self.lent_on+self.duration
+
+    def renew_lent(self, period: datetime.timedelta = datetime.timedelta(days=7)):
+        """
+        Renews the lent period for another `period` number of days
+
+        :param period: period for which the lent should be extended
+        :return: the modified lent object
+        """
+        self.duration = self.duration + period
+        self.save()
+        return self
