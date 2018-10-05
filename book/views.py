@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 
 from book.models import Book
 from book.serializers import BookSerializer
+from helpers.misc import export_csv
 
 logger = logging.getLogger(__name__)
 logger.warning(logger.name)  # use this name to configure loggers in LOGGING
@@ -92,3 +93,7 @@ class UnLockBook(APIView):
         book = get_object_or_404(Book.objects.all(), pk=kwargs.get('pk'))
         book.unlock()
         return Response(data=self.serializer_class(instance=book).data)
+
+
+def export_book(request, *args, **kwargs):
+    return export_csv(Book.objects.all(), 'book_id', 'title', 'author', 'copies', 'notes', 'category', 'price', 'locked', 'preview')
