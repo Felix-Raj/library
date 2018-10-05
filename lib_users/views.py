@@ -1,12 +1,15 @@
 import logging
 from datetime import timedelta, datetime
 
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.six import BytesIO
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from helpers.filters import filter_qs
+from helpers.misc import export_csv
 from lib_users.models import Lent, LibUsers
 from lib_users.serializers import LentSerializer, LibUsersSerializer, LentListSerializer
 
@@ -132,3 +135,16 @@ class BirthdayAlertAPI(APIView):
         users.sort(key=lambda x: x.date_of_birth.month)
 
         return Response(data=LibUsersSerializer(instance=list(users), many=True).data)
+
+
+def export_users(request, *args, **kwargs):
+    """name = models.CharField(max_length=100)
+    uid = models.CharField(null=False, blank=False, max_length=100)
+    avatar = JSONField(default={}, null=True)
+    user_type = models.CharField(choices=USER_CHOICES, default=DEFAULT, max_length=100)
+    account_activated = models.BooleanField(default=False)
+    date_of_birth = models.DateField(default=datetime.datetime.today)
+    # todo 8/8/18 felixraj : change blank,null = True
+    father = models.CharField(max_length=100, blank=True, null=True)
+    mother"""
+    return export_csv(LibUsers.objects.all(), 'id', 'uid', 'avatar', 'user_type', 'account_activated', 'date_of_birth','father', 'mother')
