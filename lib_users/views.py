@@ -138,13 +138,4 @@ class BirthdayAlertAPI(APIView):
 
 
 def export_users(request, *args, **kwargs):
-    """name = models.CharField(max_length=100)
-    uid = models.CharField(null=False, blank=False, max_length=100)
-    avatar = JSONField(default={}, null=True)
-    user_type = models.CharField(choices=USER_CHOICES, default=DEFAULT, max_length=100)
-    account_activated = models.BooleanField(default=False)
-    date_of_birth = models.DateField(default=datetime.datetime.today)
-    # todo 8/8/18 felixraj : change blank,null = True
-    father = models.CharField(max_length=100, blank=True, null=True)
-    mother"""
-    return export_csv(LibUsers.objects.all(), 'id', 'uid', 'avatar', 'user_type', 'account_activated', 'date_of_birth','father', 'mother')
+    return export_csv(LibUsers.objects.all(), 'id', 'name', 'uid', 'avatar', 'user_type', 'account_activated', 'date_of_birth','father', 'mother')
