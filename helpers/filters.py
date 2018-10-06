@@ -3,7 +3,6 @@ from functools import reduce
 
 from django.db.models import Q
 from django.db.models.fields.related import RelatedField
-from pip._vendor.pyparsing import Each
 
 logger = logging.getLogger(__name__)
 
