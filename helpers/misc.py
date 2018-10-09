@@ -7,9 +7,10 @@ logger = logging.getLogger(__name__)
 
 def export_csv(queryset, *columns, **kwargs):
     lines = ''
-    for c in columns:
+    for c in columns[:-1]:
         lines += c
         lines += ', '
+    lines += columns[-1:][0]
     for data in queryset:
         lines += '\n'
         for c in columns:
@@ -18,7 +19,8 @@ def export_csv(queryset, *columns, **kwargs):
                 if isinstance(_d, dict):
                     _d = '"'+_d.__str__()+'"'
                 lines += str(_d)
-                lines += ', '
+                if not c == columns[-1:][0]:
+                    lines += ', '
             except Exception as e:
                 logger.warn(e)
 
