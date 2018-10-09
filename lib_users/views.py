@@ -138,4 +138,4 @@ class BirthdayAlertAPI(APIView):
 
 
 def export_users(request, *args, **kwargs):
-    return export_csv(LibUsers.objects.all(), 'id', 'name', 'uid', 'avatar', 'user_type', 'account_activated', 'date_of_birth','father', 'mother')
+    return export_csv(LibUsers.objects.all(), 'pk', 'name', 'uid', 'avatar', 'user_type', 'account_activated', 'date_of_birth','father', 'mother')

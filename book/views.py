@@ -96,4 +96,4 @@ class UnLockBook(APIView):
 
 
 def export_book(request, *args, **kwargs):
-    return export_csv(Book.objects.all(), 'book_id', 'title', 'author', 'copies', 'notes', 'category', 'price', 'locked', 'preview')
+    return export_csv(Book.objects.all(), 'pk', 'book_id', 'title', 'author', 'copies', 'notes', 'category', 'price', 'locked', 'preview')
