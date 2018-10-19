@@ -17,12 +17,12 @@ def export_csv(queryset, *columns, **kwargs):
             try:
                 _d = getattr(data, c)
                 if isinstance(_d, dict):
-                    _d = '"'+_d.__str__()+'"'
+                    _d = '"' + _d.__str__() + '"'
                 lines += str(_d)
                 if not c == columns[-1:][0]:
                     lines += ', '
             except Exception as e:
-                logger.warn(e)
+                logger.warning(e)
 
     response = HttpResponse(lines, content_type='application/csv')
     response['Content-Disposition'] = 'attachment; filename="data.csv"'
