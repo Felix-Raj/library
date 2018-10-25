@@ -26,4 +26,5 @@ def export_csv(queryset, *columns, **kwargs):
 
     response = HttpResponse(lines, content_type='application/csv')
     response['Content-Disposition'] = 'attachment; filename="data.csv"'
-    return response
+
+    return  response
