@@ -4,6 +4,7 @@ from datetime import timedelta, datetime
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.six import BytesIO
+from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -28,6 +29,8 @@ def filter_user_list(queryset, **kwargs):
 
 class LibUserListView(ListAPIView):
     serializer_class = LibUsersSerializer
+    filter_backends = (SearchFilter,)
+    search_fields = ('name', 'uid')
 
     def get_queryset(self):
         queryset = LibUsers.objects.all()
@@ -55,6 +58,8 @@ class AccountActivateDeactivateAPI(APIView):
 
 class LentListView(ListAPIView):
     serializer_class = LentListSerializer
+    filter_backends = (SearchFilter)
+    search_fields = ('lib_user__name', 'lib_user__uid', 'book', 'book__title', 'book__book_id')
 
     def get_queryset(self):
         queryset = Lent.objects.all()
@@ -92,6 +97,9 @@ class LentToUserAPI(APIView):
 class LentDueAPI(APIView):
     model = Lent
     serializer = LentListSerializer
+    # TODO: may not be useful
+    filter_backends = (SearchFilter)
+    search_fields = ('lib_user__name', 'lib_user__uid', 'book', 'book__title', 'book__book_id')
 
     def get_queryset(self):
         return self.model.objects.all().order_by('lent_on')
