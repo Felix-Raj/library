@@ -58,8 +58,8 @@ class AccountActivateDeactivateAPI(APIView):
 
 class LentListView(ListAPIView):
     serializer_class = LentListSerializer
-    filter_backends = (SearchFilter)
-    search_fields = ('lib_user__name', 'lib_user__uid', 'book', 'book__title', 'book__book_id')
+    filter_backends = (SearchFilter,)
+    search_fields = ('lib_user__name', 'lib_user__uid', 'book__title', 'book__book_id')
 
     def get_queryset(self):
         queryset = Lent.objects.all()
