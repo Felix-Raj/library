@@ -1,8 +1,10 @@
 import logging
 from datetime import timedelta, datetime
 
+from django.db.transaction import non_atomic_requests
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.decorators import method_decorator
 from django.utils.six import BytesIO
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.generics import ListAPIView, CreateAPIView, RetrieveAPIView, DestroyAPIView
@@ -27,6 +29,8 @@ def filter_user_list(queryset, **kwargs):
     return filter_qs(queryset, ['name', 'uid', 'pk'], **kwargs)
 
 
+# TODO: apply the `non_atomic_request` decorator in required views
+@method_decorator(non_atomic_requests, name='dispatch')
 class LibUserListView(ListAPIView):
     serializer_class = LibUsersSerializer
     filter_backends = (SearchFilter,)
@@ -37,6 +41,7 @@ class LibUserListView(ListAPIView):
         return filter_user_list(queryset, **self.request.GET)
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class LibUsersCreateView(CreateAPIView):
     serializer_class = LibUsersSerializer
 
@@ -44,6 +49,7 @@ class LibUsersCreateView(CreateAPIView):
         super(LibUsersCreateView, self).perform_create(serializer)
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class AccountActivateDeactivateAPI(APIView):
     serializer_class = LibUsersSerializer
 
@@ -56,6 +62,7 @@ class AccountActivateDeactivateAPI(APIView):
         return Response(data={'account_activated':user.account_activated})
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class LentListView(ListAPIView):
     serializer_class = LentListSerializer
     filter_backends = (SearchFilter,)
@@ -69,11 +76,7 @@ class LentListView(ListAPIView):
 class LentCreateAPI(CreateAPIView):
     serializer_class = LentSerializer
 
-    # todo 5/23/18 felixraj : validate weather book is actually available for lent
-    # http://www.django-rest-framework.org/api-guide/serializers/#validation
-
     def perform_create(self, serializer):
-        # serializer.save(duration=serializer.validated_data.get('duration', timedelta(seconds=Lent.DEFAULT_LENT_DURATION))*24*60*60)
         duration: timedelta = serializer.validated_data.get('duration', timedelta(days=0))
         if duration.days == 0:
             if duration.seconds != 0:
@@ -87,6 +90,7 @@ class LentReceivedAPI(DestroyAPIView):
     queryset = Lent.objects.all()
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class LentToUserAPI(APIView):
     def get(self, *args, **kwargs):
         # todo 7/28/18 felixraj : may apply pagination
@@ -94,6 +98,7 @@ class LentToUserAPI(APIView):
         return Response(data=LentListSerializer(instance=user.lent_status(), many=True).data)
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class LentDueAPI(APIView):
     model = Lent
     serializer = LentListSerializer
@@ -116,6 +121,7 @@ class LentDueAPI(APIView):
         return Response(data=self.serializer(instance=lents, many=True).data)
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class LentRenewAPI(APIView):
     model = Lent
     serializer_class = LentSerializer
@@ -127,6 +133,7 @@ class LentRenewAPI(APIView):
         return Response(data=self.serializer_class(instance=lent).data)
 
 
+@method_decorator(non_atomic_requests, name='dispatch')
 class BirthdayAlertAPI(APIView):
     def get(self, *args, **kwargs):
         # todo 7/28/18 felixraj : may apply pagination

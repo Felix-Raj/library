@@ -133,12 +133,9 @@ class Lent(models.Model):
     def save(self, *args, **kwargs):
         if self.duration == datetime.timedelta(days=0):
             self.duration = datetime.timedelta(days=self.DEFAULT_LENT_DURATION)
-
-        self.book.lent_book()
         super(Lent, self).save(*args, **kwargs)
 
     def delete(self, using=None, keep_parents=False):
-        self.book.return_book()
         super(Lent, self).delete(using, keep_parents)
 
     @cached_property
@@ -155,3 +152,4 @@ class Lent(models.Model):
         self.duration = self.duration + period
         self.save()
         return self
+

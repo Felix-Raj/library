@@ -1,12 +1,73 @@
 import logging
 
 from django.contrib.postgres.fields import JSONField
+from django.core.validators import MinValueValidator
 from django.db import models
 
 logger = logging.getLogger(__name__)
 
 
-class Book(models.Model):
+class Stocks(models.Model):
+    item_id = models.CharField(null=False, blank=False, max_length=100, default=0, unique=True)
+    name = models.TextField()
+    copies = models.IntegerField(default=0, validators=[MinValueValidator(limit_value=0), ])
+    notes = models.TextField()
+    price = models.FloatField()
+
+    class Meta:
+        abstract = True
+
+
+class StocksLentable(Stocks):
+    copies_on_lent = models.IntegerField(default=0, validators=[MinValueValidator(limit_value=0), ])
+    locked = models.BooleanField(default=False)
+
+    def _toggle_lock_state(self):
+        self.locked = not self.locked
+        self.save()
+
+    def lock(self):
+        if not self.locked:
+            self._toggle_lock_state()
+
+    def unlock(self):
+        if self.locked:
+            self._toggle_lock_state()
+
+    def lent(self, count=1):
+        # validation is done in serializer of Lent
+        self.copies_on_lent += count
+        self.save()
+
+    def return_item(self, count=1):
+        if self.copies - self.copies_on_lent >= count:
+            self.copies_on_lent -= count
+            self.save()
+        else:
+            raise ValueError('more copies than expected. expected to have less '
+                             'than or equal to {expected_copied} copies to be '
+                             'returned, but got {actual_returning} copies. '
+                             'Total copies {total_copies}, Copies on lent '
+                             '{copies_on_lent}.'.format(
+                                                        expected_copied=self.copies - self.copies_on_lent,
+                                                        actual_returning=count,
+                                                        total_copies=self.copies,
+                                                        copies_on_lent=self.copies_on_lent))
+
+    @property
+    def is_available(self):
+        return not self.locked and (self.copies > self.copies_on_lent)
+
+    class Meta:
+        abstract = True
+
+
+class Disks(StocksLentable):
+    def __str__(self):
+        return 'Disk {}'.format(self.name)
+
+
+class Book(StocksLentable):
     MAGAZINE = 'magazine'
     COMICS = 'comics'
     BOOKS = 'books'
@@ -18,7 +79,6 @@ class Book(models.Model):
         (BOOKS, BOOKS.capitalize())
     )
 
-    book_id = models.CharField(null=False, blank=False, max_length=100, default=0, unique=True)
     title = models.TextField()
     author = models.TextField()
     copies = models.IntegerField(default=1)
@@ -44,38 +104,15 @@ class Book(models.Model):
     def has_tag(self, tag):
         return self.booktag_set.all().filter(tag__iexact=tag.lower()).count() > 0
 
-    def _toggle_lock_state(self):
-        self.locked = not self.locked
-        self.save()
-
-    def lock(self):
-        if not self.locked:
-            self._toggle_lock_state()
-
-    def unlock(self):
-        if self.locked:
-            self._toggle_lock_state()
-
     def return_book(self, count=1):
-        self.copies_on_lent -= count
-        self.save()
+        super(Book, self).return_item(count)
 
     def lent_book(self, count=1):
-        """
-        Increases the copies_on_lent by one, only if book is available to lent.
-
-        :param count: count of book to lent out
-        :return:
-        """
-        if self.is_available:
-            self.copies_on_lent += count
-            self.save()
-        else:
-            logger.warning(msg='Book Not available')
+        super(Book, self).lent(count)
 
     @property
-    def is_available(self):
-        return not self.locked and (self.copies > self.copies_on_lent)
+    def book_id(self):
+        return super(Book, self).item_id
 
 
 class BookTag(models.Model):
